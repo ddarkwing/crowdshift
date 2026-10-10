@@ -1,0 +1,14 @@
+{
+  "name": "crowdshift-forgehacks-2026",
+  "version": "1.1.0",
+  "private": true,
+  "description": "CrowdShift \u2014 AI Climate Operations & Resilience Platform with Globe.gl, MapLibre, deck.gl and NASA GIBS",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "node --watch start.js",
+    "check": "node --check start.js && node --check server.js && node --check public/app.js && node --check public/landing.js && node --check public/map-viz.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

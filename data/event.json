@@ -1,0 +1,152 @@
+{
+  "event": {
+    "id": "forge-summer-festival",
+    "name": "Forge Summer Festival",
+    "location": "Brussels, Belgium",
+    "lat": 50.8503,
+    "lon": 4.3517,
+    "attendees": 4800,
+    "window": "12:00\u201321:00",
+    "criticalWindow": "14:00\u201317:30",
+    "safeWindow": "18:10\u201320:00",
+    "role": "Operations Manager"
+  },
+  "zones": [
+    {
+      "id": "main",
+      "name": "Main Stage",
+      "capacity": 2400,
+      "people": 2140,
+      "heat": 92,
+      "crowd": 76,
+      "shade": 12,
+      "waterDistanceM": 140
+    },
+    {
+      "id": "stage-b",
+      "name": "Stage B",
+      "capacity": 1200,
+      "people": 920,
+      "heat": 74,
+      "crowd": 62,
+      "shade": 31,
+      "waterDistanceM": 80
+    },
+    {
+      "id": "kids",
+      "name": "Kids Zone",
+      "capacity": 450,
+      "people": 310,
+      "heat": 84,
+      "crowd": 58,
+      "shade": 44,
+      "waterDistanceM": 95
+    },
+    {
+      "id": "hall-c",
+      "name": "Hall C",
+      "capacity": 1000,
+      "people": 0,
+      "heat": 18,
+      "crowd": 0,
+      "shade": 100,
+      "waterDistanceM": 35
+    }
+  ],
+  "resources": {
+    "water": {
+      "current": 2900,
+      "required": 4600,
+      "unit": "L/h",
+      "stations": 4
+    },
+    "cooling": {
+      "current": 620,
+      "required": 1450,
+      "unit": "people/h"
+    },
+    "shade": {
+      "current": 72,
+      "required": 90,
+      "unit": "%"
+    },
+    "medical": {
+      "current": 2,
+      "required": 3,
+      "unit": "teams"
+    }
+  },
+  "risk": {
+    "environmental": 92,
+    "exposure": 76,
+    "resources": 68,
+    "warning": 80,
+    "operational": 82,
+    "resilience": 62
+  },
+  "timeline": [
+    {
+      "time": "12:00",
+      "risk": 54,
+      "temp": 33.2,
+      "feels": 35.1,
+      "stage": "WATCH"
+    },
+    {
+      "time": "13:00",
+      "risk": 61,
+      "temp": 35.4,
+      "feels": 36.9,
+      "stage": "WATCH"
+    },
+    {
+      "time": "14:00",
+      "risk": 71,
+      "temp": 37.8,
+      "feels": 39.1,
+      "stage": "HIGH"
+    },
+    {
+      "time": "15:00",
+      "risk": 82,
+      "temp": 39.1,
+      "feels": 40.7,
+      "stage": "HIGH"
+    },
+    {
+      "time": "16:00",
+      "risk": 87,
+      "temp": 40.3,
+      "feels": 41.5,
+      "stage": "CRITICAL"
+    },
+    {
+      "time": "17:00",
+      "risk": 85,
+      "temp": 39.8,
+      "feels": 41.0,
+      "stage": "CRITICAL"
+    },
+    {
+      "time": "18:00",
+      "risk": 78,
+      "temp": 38.6,
+      "feels": 39.6,
+      "stage": "HIGH"
+    },
+    {
+      "time": "19:00",
+      "risk": 67,
+      "temp": 36.9,
+      "feels": 37.8,
+      "stage": "ELEVATED"
+    },
+    {
+      "time": "20:00",
+      "risk": 58,
+      "temp": 34.8,
+      "feels": 35.7,
+      "stage": "WATCH"
+    }
+  ]
+}

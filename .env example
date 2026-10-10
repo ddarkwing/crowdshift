@@ -1,0 +1,7 @@
+# Optional: enable live ActionCast AI through ForgeHacks sponsor Featherless.
+FEATHERLESS_API_KEY=
+FEATHERLESS_MODEL=Qwen/Qwen2.5-7B-Instruct
+
+# Server
+PORT=9000
+HOST=0.0.0.0

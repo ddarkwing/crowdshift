@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: crowdshift
+    runtime: node
+    plan: free
+    buildCommand: ""
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: HOST
+        value: 0.0.0.0
+      - key: FEATHERLESS_API_KEY
+        sync: false
+      - key: FEATHERLESS_MODEL
+        value: Qwen/Qwen2.5-7B-Instruct

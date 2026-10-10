@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CrowdShift — AI Climate Operations & Resilience Platform">
+<title>CrowdShift — Climate Operations Intelligence</title>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.13.0/dist/maplibre-gl.css">
+<script defer src="https://unpkg.com/maplibre-gl@6.13.0/dist/maplibre-gl.js"></script>
+<script defer src="https://unpkg.com/deck.gl@9.4.0-beta.4/dist.min.js"></script>
+
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo"><i></i><b></b></div>
+      <div><strong>CrowdShift</strong><span>Climate Operations AI</span></div>
+    </div>
+    <div class="workspace">
+      <span class="eyebrow">WORKSPACE</span>
+      <button class="workspace-btn"><span class="status-dot"></span><div><b>Forge Summer Festival</b><small>Brussels · LIVE DEMO</small></div><span>⌄</span></button>
+    </div>
+    <nav id="nav">
+      <button class="nav-item active" data-view="atlas"><i>◈</i><span>Atlas</span><em>01</em></button>
+      <button class="nav-item" data-view="watch"><i>◉</i><span>Climate Watch</span><em>04</em></button>
+      <button class="nav-item" data-view="event"><i>⬡</i><span>Event Twin</span></button>
+      <button class="nav-item" data-view="actioncast"><i>✦</i><span>ActionCast AI</span><em>AI</em></button>
+      <button class="nav-item" data-view="scenarios"><i>◫</i><span>Scenario Lab</span></button>
+      <button class="nav-item" data-view="response"><i>↗</i><span>Response Hub</span><em id="taskNavCount">5</em></button>
+      <button class="nav-item" data-view="reports"><i>▥</i><span>Reports</span></button>
+      <button class="nav-item" data-view="evidence"><i>✓</i><span>Evidence</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="role-card"><span class="eyebrow">VIEWING AS</span><b>Operations Manager</b><small>Decision + response access</small></div>
+      <div class="system-mini"><span id="systemLed"></span><div><b id="systemStatus">Checking systems…</b><small id="systemDetail">API health</small></div></div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div><span class="eyebrow" id="viewKicker">EUROPE CLIMATE COMMAND</span><h1 id="viewTitle">Climate Atlas</h1></div>
+      <div class="top-actions"><a class="home-link" href="/">← Landing</a>
+        <div class="mode-switch"><button class="active" id="scenarioMode">Heatwave 2026</button><button id="liveMode">Live Europe</button></div>
+        <button class="icon-btn" id="architectureBtn" title="How it works">⌘</button>
+        <button class="judge-btn" id="judgeTourBtn"><span>▶</span> Judge Tour</button>
+      </div>
+    </header>
+
+    <section class="view active" id="view-atlas">
+      <div class="atlas-shell">
+        <div class="glass map-panel">
+          <div class="map-head">
+            <div><span class="eyebrow">CROWDSHIFT ATLAS</span><h2>Europe climate exposure</h2></div>
+            <div class="map-head-right"><span class="live-tag" id="dataModeTag"><i></i> HEATWAVE SCENARIO</span><span class="updated" id="atlasUpdated">15:00 simulation</span></div>
+          </div>
+          <div class="map-stage" id="mapStage">
+            <div id="realEuropeMap" class="real-map" aria-label="Interactive MapLibre Europe climate map"></div>
+            <div id="mapRuntimeStatus" class="map-runtime-status"><i></i><span>MapLibre + deck.gl starting…</span></div>
+            <svg id="europeMap" class="fallback-map" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="soft"><feGaussianBlur stdDeviation="28"/></filter>
+                <filter id="glow"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <linearGradient id="landGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#173b31"/><stop offset="1" stop-color="#0c211b"/></linearGradient>
+                <linearGradient id="heatStroke" x1="0" x2="1"><stop offset="0" stop-color="#ffd76c"/><stop offset=".55" stop-color="#ff9d4d"/><stop offset="1" stop-color="#ff6d62"/></linearGradient>
+                <linearGradient id="colGrad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffe58a"/><stop offset=".48" stop-color="#ffae54"/><stop offset="1" stop-color="#ff665d"/></linearGradient>
+              </defs>
+              <g id="heatFields" filter="url(#soft)">
+                <ellipse id="heatA" cx="300" cy="440" rx="135" ry="78" fill="#ffbd59" opacity=".42"/>
+                <ellipse id="heatB" cx="445" cy="367" rx="160" ry="96" fill="#ff8952" opacity=".40"/>
+                <ellipse id="heatC" cx="586" cy="306" rx="114" ry="70" fill="#ff6258" opacity=".32"/>
+                <ellipse id="heatD" cx="695" cy="275" rx="88" ry="55" fill="#ff6d62" opacity=".20"/>
+              </g>
+              <g class="flow-lines">
+                <path d="M205 490 C 315 445, 395 407, 475 355 S 605 288, 742 242" class="heat-corridor wide"/>
+                <path d="M218 500 C 328 458, 425 410, 501 365 S 630 300, 755 255" class="heat-corridor"/>
+                <path d="M230 512 C 340 470, 448 421, 530 372 S 650 313, 770 268" class="air-flow"/>
+                <path d="M190 525 C 330 470, 450 412, 590 325 S 710 265, 800 230" class="air-flow alt"/>
+              </g>
+
+              <g id="landShadow" transform="translate(0,8)" opacity=".28">
+                <path d="M150 502 L160 430 L150 350 L178 300 L228 258 L286 240 L340 264 L398 304 L438 288 L485 310 L515 348 L548 370 L610 312 L690 270 L742 226 L812 216 L830 242 L786 294 L810 350 L780 385 L716 390 L670 430 L618 446 L590 490 L548 514 L510 548 L452 550 L410 590 L360 580 L314 595 L270 566 L224 536 Z" fill="#16372e"/>
+              </g>
+              <g id="countries">
+                <path data-name="Spain & Portugal" data-copy="The heatwave begins over Iberia before moving north-east." d="M150 502 L160 430 L150 350 L178 300 L228 258 L286 240 L340 264 L398 304 L392 382 L366 420 L320 462 L270 480 L224 520 Z" class="country"/>
+                <path data-name="France" data-copy="France becomes the main heat transfer corridor toward Belgium." d="M398 304 L438 288 L485 310 L515 348 L500 385 L472 416 L438 430 L410 462 L366 450 L366 420 L392 382 Z" class="country"/>
+                <path data-name="Belgium" data-copy="Belgium reaches the event action threshold at 15:00 in the scenario." d="M485 310 L512 310 L532 326 L524 348 L501 352 L486 338 Z" class="country country-hot"/>
+                <path data-name="Germany" data-copy="Germany sits on the eastern edge of the corridor." d="M524 348 L548 370 L515 392 L500 385 L501 352 Z" class="country"/>
+                <path data-name="Poland" data-copy="Eastern Europe remains warm but less critical in this scenario." d="M548 370 L610 312 L690 270 L716 294 L704 324 L668 346 L628 366 L590 382 Z" class="country"/>
+                <path data-name="Scandinavia" data-copy="Northern Europe provides a cooler geographic reference." d="M690 270 L742 226 L812 216 L830 242 L786 294 L770 322 L730 315 L716 294 Z" class="country"/>
+                <path data-name="Italy" data-copy="Northern Italy remains hot while the priority event is Brussels." d="M618 446 L590 490 L548 514 L535 536 L568 552 L610 540 L638 516 L660 520 L640 490 L670 430 Z" class="country"/>
+                <path data-name="Balkans" data-copy="South-east Europe remains elevated through the afternoon." d="M548 514 L510 548 L452 550 L410 590 L460 582 L510 574 L568 552 L535 536 Z" class="country"/>
+                <path data-name="United Kingdom" data-copy="The UK stays outside the strongest modeled heat corridor." d="M126 264 L168 222 L210 198 L244 188 L260 196 L250 220 L220 248 L180 258 L148 270 Z" class="country"/>
+              </g>
+              <g class="country-labels">
+                <text x="236" y="365">Spain</text><text x="425" y="382">France</text><text x="492" y="326">Belgium</text>
+                <text x="530" y="395">Germany</text><text x="615" y="348">Poland</text><text x="610" y="520">Italy</text><text x="155" y="220">United Kingdom</text>
+              </g>
+              <g id="cityLayer">
+                <g class="city" data-city="London" transform="translate(210 225)"><circle class="city-pulse" r="18"/><circle class="city-dot" r="4"/><text x="12" y="4">London</text></g>
+                <g class="city" data-city="Paris" transform="translate(430 372)"><circle class="city-pulse" r="18"/><circle class="city-dot" r="4"/><text x="12" y="4">Paris</text></g>
+                <g class="city priority" data-city="Brussels" transform="translate(497 333)"><circle class="event-pulse" r="25"/><circle class="event-ring" r="15"/><circle class="event-dot" r="5"/><text x="15" y="-7">BRUSSELS</text><text class="subcity" x="15" y="9">Forge Summer Festival</text></g>
+                <g class="city" data-city="Berlin" transform="translate(574 357)"><circle class="city-pulse" r="18"/><circle class="city-dot" r="4"/><text x="12" y="4">Berlin</text></g>
+                <g class="city" data-city="Madrid" transform="translate(257 425)"><circle class="city-pulse" r="18"/><circle class="city-dot" r="4"/><text x="12" y="4">Madrid</text></g>
+                <g class="city" data-city="Rome" transform="translate(605 532)"><circle class="city-pulse" r="18"/><circle class="city-dot" r="4"/><text x="12" y="4">Rome</text></g>
+              </g>
+              <g id="riskColumns">
+                <g transform="translate(497 333)"><rect id="colBrussels" class="risk-col" x="-7" y="-83" width="14" height="73" rx="4"/></g>
+                <g transform="translate(430 372)"><rect id="colParis" class="risk-col dim" x="-6" y="-52" width="12" height="42" rx="4"/></g>
+                <g transform="translate(574 357)"><rect id="colBerlin" class="risk-col dim" x="-6" y="-45" width="12" height="35" rx="4"/></g>
+                <g transform="translate(257 425)"><rect id="colMadrid" class="risk-col dim" x="-6" y="-55" width="12" height="45" rx="4"/></g>
+              </g>
+            </svg>
+            <div class="map-tooltip" id="mapTooltip"></div>
+            <div class="map-layerbar">
+              <button class="map-tool active" id="heatLayerBtn"><i class="heat-key"></i>Heat</button>
+              <button class="map-tool active" id="hexLayerBtn"><i class="risk-key"></i>3D Risk</button>
+              <button class="map-tool active" id="eventLayerBtn"><i class="event-key"></i>Events</button>
+              <button class="map-tool" id="nasaLayerBtn"><i class="nasa-key"></i>NASA GIBS</button>
+              <button class="map-tool" id="resetMapBtn">⌂ Europe</button>
+            </div>
+            <div class="city-strip" id="cityStrip"></div>
+          </div>
+          <div class="timeline-card">
+            <button class="round-play" id="timelinePlay">❚❚</button>
+            <div class="timeline-main">
+              <div class="timeline-row"><span><small>SIMULATION TIME</small><b id="timelineTime">15:00</b></span><span class="timeline-message" id="timelineMessage"><i></i>Peak exposure building</span></div>
+              <input type="range" id="timelineRange" min="0" max="8" value="3" step="1">
+              <div class="ticks"><span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span><span>20:00</span></div>
+            </div>
+            <div class="timeline-risk"><small>EVENT RISK</small><b id="atlasEventRisk">82</b><span>/100</span></div>
+          </div>
+        </div>
+
+        <aside class="atlas-side">
+          <div class="glass hero-event">
+            <div class="card-head"><div><span class="eyebrow">PRIORITY EVENT</span><h3>Forge Summer Festival</h3><small>Brussels · 4,800 attendees</small></div><div class="risk-orb" id="heroRisk">82</div></div>
+            <div class="metric-trio">
+              <div><small>FEELS LIKE</small><b id="heroFeels">40.7°C</b></div>
+              <div><small>CRITICAL WINDOW</small><b>14:00–17:30</b></div>
+              <div><small>RESILIENCE</small><b>62/100</b></div>
+            </div>
+            <div class="action-signal"><i></i><span>ActionCast found <b>5 feasible interventions</b></span></div>
+            <button class="primary wide" data-jump="event">Open Event Twin <span>↗</span></button>
+          </div>
+          <div class="glass signal-card">
+            <span class="eyebrow">ACTIONCAST SIGNAL</span>
+            <h3><span class="spark">✦</span><span id="atlasSignalTitle">Heat corridor moving north-east</span></h3>
+            <p id="atlasSignalText">The 15:00 simulation increases heat exposure across northern France and Belgium. Brussels reaches the event action threshold.</p>
+            <div class="confidence"><span>CONFIDENCE <b>94%</b></span><i><em></em></i></div>
+          </div>
+          <div class="glass safe-window">
+            <div><span class="eyebrow">SAFE WINDOW FINDER</span><h3>18:10–20:00</h3><p>Lowest operational exposure while preserving the event schedule.</p></div>
+            <div class="safe-score"><small>RISK</small><b>44</b></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-watch">
+      <div class="page-grid watch-grid">
+        <div class="glass section-card span-2">
+          <div class="section-head"><div><span class="eyebrow">CLIMATE WATCH</span><h2>Active operational signals</h2><p>Hazard + exposure + resource conflicts, not weather alone.</p></div><button class="secondary" id="refreshAlertsBtn">Refresh feeds</button></div>
+          <div class="signal-grid" id="signalGrid"></div>
+        </div>
+        <div class="glass section-card">
+          <div class="section-head"><div><span class="eyebrow">OFFICIAL CONTEXT</span><h2>MeteoAlarm</h2></div><span class="api-badge" id="warningApiBadge">ATOM</span></div>
+          <div id="officialAlerts" class="alert-list"></div>
+        </div>
+        <div class="glass section-card">
+          <div class="section-head"><div><span class="eyebrow">WHAT CHANGED?</span><h2>Since 14:30</h2></div></div>
+          <div class="change-list">
+            <div><span>Apparent temperature</span><b class="bad">+1.4°C</b></div>
+            <div><span>Main Stage crowd</span><b class="bad">+320</b></div>
+            <div><span>Cooling demand</span><b class="bad">+18%</b></div>
+            <div><span>Water A utilization</span><b class="bad">74 → 118%</b></div>
+            <div><span>Operational risk</span><b class="bad">71 → 82</b></div>
+          </div>
+          <div class="note-ai">✦ Two previously optional interventions are now recommended.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-event">
+      <div class="event-layout">
+        <div class="glass twin-card">
+          <div class="section-head"><div><span class="eyebrow">EVENT DIGITAL TWIN</span><h2>Forge Summer Festival</h2><p>Climate × Crowd × Resources</p></div><div class="layer-pills"><button class="active">Composite</button><button>Climate</button><button>Crowd</button><button>Resources</button></div></div>
+          <div class="twin-stage">
+            <div class="twin-grid"></div><div class="heat-cloud hc1"></div><div class="heat-cloud hc2"></div>
+            <svg class="routes" viewBox="0 0 900 520"><path d="M235 210 C 320 250,390 296,470 330 S 610 390,700 420"/><path d="M710 205 C 650 240,610 285,560 330 S 510 390,490 420"/></svg>
+            <button class="zone main-zone" data-zone="main"><b>MAIN STAGE</b><span>2,140 / 2,400</span><em>Risk 88</em></button>
+            <button class="zone stageb-zone" data-zone="stage-b"><b>STAGE B</b><span>920 / 1,200</span><em>Risk 67</em></button>
+            <button class="zone kids-zone" data-zone="kids"><b>KIDS ZONE</b><span>310 people</span><em>Risk 75</em></button>
+            <button class="zone hall-zone" data-zone="hall-c"><b>HALL C</b><span id="hallStatus">Closed</span><em>+830 ppl/h</em></button>
+            <i class="res water r1">W</i><i class="res water r2">W</i><i class="res water r3">W</i><i class="res water r4">W</i>
+            <i class="res med r5">+</i><i class="res med r6">+</i><i class="res cool r7">❄</i>
+            <div class="twin-legend"><span><i class="red-dot"></i>High exposure</span><span><i class="cyan-dot"></i>Resources</span><span><i class="green-dot"></i>Flow</span></div>
+          </div>
+        </div>
+        <aside class="event-side">
+          <div class="glass riskgraph">
+            <span class="eyebrow">RISKGRAPH ENGINE</span>
+            <div class="risk-main"><div><b id="riskGraphScore">82</b><small>/100 OPERATIONAL</small></div><span class="risk-label">HIGH</span></div>
+            <div class="risk-components">
+              <div><span>Environmental <b>40%</b></span><em><i style="width:92%"></i></em><strong>92</strong></div>
+              <div><span>Exposure <b>25%</b></span><em><i style="width:76%"></i></em><strong>76</strong></div>
+              <div><span>Resources <b>25%</b></span><em><i style="width:68%"></i></em><strong>68</strong></div>
+              <div><span>Official warning <b>10%</b></span><em><i style="width:80%"></i></em><strong>80</strong></div>
+            </div>
+            <button class="text-link" id="why82Btn">Why 82? →</button>
+          </div>
+          <div class="glass zone-inspector" id="zoneInspector">
+            <span class="eyebrow">SELECTED ZONE</span><h3>Main Stage</h3>
+            <div class="zone-metrics"><div><small>PEOPLE</small><b>2,140</b></div><div><small>HEAT</small><b>92</b></div><div><small>SHADE</small><b>12%</b></div><div><small>WATER</small><b>140 m</b></div></div>
+            <p>Main Stage becomes the highest-risk zone after 14:40 as crowd density overlaps with the cooling deficit.</p>
+          </div>
+        </aside>
+        <div class="glass resource-matrix">
+          <div class="section-head"><div><span class="eyebrow">RESOURCE MATRIX</span><h2>Capacity gaps</h2></div><button class="primary" data-jump="actioncast">Optimize resources with AI</button></div>
+          <div class="resource-table">
+            <div class="rt-head"><span>Resource</span><span>Available</span><span>Required</span><span>Gap</span><span>Status</span></div>
+            <div><b>Water throughput</b><span>2,900 L/h</span><span>4,600 L/h</span><strong>−1,700</strong><em>Critical</em></div>
+            <div><b>Cooling capacity</b><span id="coolingAvailable">620 ppl/h</span><span>1,450 ppl/h</span><strong id="coolingGap">−830</strong><em>Critical</em></div>
+            <div><b>Shade coverage</b><span>72%</span><span>90%</span><strong>−18%</strong><em>Gap</em></div>
+            <div><b>Medical teams</b><span>2</span><span>3</span><strong>−1</strong><em>Gap</em></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-actioncast">
+      <div class="actioncast-layout">
+        <div class="glass action-input">
+          <div class="section-head"><div><span class="eyebrow">ACTIONCAST AI</span><h2>Operational planner</h2><p>Constraints + RiskGraph + retrieved guidance → feasible action plan.</p></div><span class="ai-status" id="aiStatusBadge"><i></i>Checking AI</span></div>
+          <div class="context-strip">
+            <span>Risk <b>82</b></span><span>Attendees <b>4,800</b></span><span>Budget <b>€2,000</b></span><span>Critical <b>14:00–17:30</b></span>
+          </div>
+          <label class="prompt-label">Tell ActionCast what cannot change</label>
+          <textarea id="aiPrompt">We cannot change the event start time or cancel the event. We have €2,000 extra budget. Reduce operational risk as much as possible while keeping activities running.</textarea>
+          <div class="constraint-row">
+            <button class="constraint active">€2,000 budget</button><button class="constraint active">No cancellation</button><button class="constraint active">Keep start time</button><button class="constraint">Protect Kids Zone</button>
+          </div>
+          <button class="primary wide large" id="generatePlanBtn">✦ Generate ActionCast Plan</button>
+          <div class="retrieval-note"><span>RAG</span> Relevant guidance is retrieved before the AI call. Environmental metrics are never invented by the LLM.</div>
+        </div>
+        <div class="glass ai-output">
+          <div class="section-head"><div><span class="eyebrow">RANKED PLAN</span><h2 id="planHeadline">Ready to optimize</h2></div><span class="plan-mode" id="planMode">—</span></div>
+          <div id="planSummary" class="plan-summary">Generate a plan to see ranked, budget-aware interventions with evidence and confidence.</div>
+          <div id="planList" class="plan-list placeholder-plan"></div>
+          <div class="plan-footer" id="planFooter"></div>
+        </div>
+        <div class="glass evidence-rail">
+          <span class="eyebrow">RETRIEVED EVIDENCE</span><h2>Why these actions?</h2>
+          <div id="retrievedGuidance" class="guidance-mini"><p>Evidence appears after planning.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-scenarios">
+      <div class="scenario-layout">
+        <div class="glass scenario-builder">
+          <div class="section-head"><div><span class="eyebrow">SCENARIO LAB</span><h2>Build a response</h2><p>Counterfactual simulation before committing resources.</p></div><span class="api-badge">LIVE RECOMPUTE</span></div>
+          <div class="scenario-control"><div><b>Open Hall C</b><span>+830 people/hour cooling · €420</span></div><label class="switch"><input id="scHall" type="checkbox"><i></i></label></div>
+          <div class="scenario-control"><div><b>Temporary water stations</b><span>+620 L/h each · €250</span></div><div class="stepper"><button data-step="water" data-dir="-1">−</button><b id="scWater">0</b><button data-step="water" data-dir="1">+</button></div></div>
+          <div class="scenario-control"><div><b>Shade canopies</b><span>+6% coverage each · €400</span></div><div class="stepper"><button data-step="shade" data-dir="-1">−</button><b id="scShade">0</b><button data-step="shade" data-dir="1">+</button></div></div>
+          <div class="scenario-control"><div><b>Additional response teams</b><span>+1 team · €300</span></div><div class="stepper"><button data-step="medical" data-dir="-1">−</button><b id="scMedical">0</b><button data-step="medical" data-dir="1">+</button></div></div>
+          <div class="scenario-control"><div><b>Shift Kids Program to 18:00</b><span>Moves activity into safest operating window · €0</span></div><label class="switch"><input id="scKids" type="checkbox"><i></i></label></div>
+          <div class="budget-line"><span>Budget cap</span><div>€ <input id="scBudget" value="2000" type="number"></div></div>
+          <button class="secondary wide" id="optimizeScenarioBtn">Use recommended combination</button>
+        </div>
+        <div class="glass scenario-result">
+          <span class="eyebrow">PROJECTED RESULT</span><h2>Before → After</h2>
+          <div class="compare-circles"><div class="score-circle before"><small>CURRENT</small><b>82</b><span>HIGH</span></div><div class="arrow">→</div><div class="score-circle after"><small>SCENARIO</small><b id="scenarioAfterRisk">82</b><span id="scenarioLevel">HIGH</span></div></div>
+          <div class="impact-grid"><div><small>RISK ↓</small><b id="scenarioReduction">0 pts</b></div><div><small>SPEND</small><b id="scenarioSpend">€0</b></div><div><small>RESILIENCE</small><b id="scenarioResilience">62 → 62</b></div><div><small>BUDGET</small><b id="scenarioBudgetState">€2,000 left</b></div></div>
+          <div class="scenario-deltas" id="scenarioDeltas"><p>Add interventions to see projected capacity changes.</p></div>
+          <button class="primary wide large" id="applyScenarioBtn" disabled>Apply scenario to operations</button>
+        </div>
+        <div class="glass uncertainty-card">
+          <span class="eyebrow">UNCERTAINTY ENVELOPE</span><h2>Expected vs range</h2>
+          <div class="uncertainty-line"><div class="u-best">71<small>BEST</small></div><div class="u-expected">82<small>EXPECTED</small></div><div class="u-worst">91<small>WORST</small></div></div>
+          <p>Plans are evaluated against more than one plausible risk state instead of a single precise forecast.</p>
+          <div class="safe-banner"><span>✓</span><div><b>Safest operating window</b><small>18:10–20:00 · projected risk 44</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-response">
+      <div class="response-layout">
+        <div class="glass tasks-card">
+          <div class="section-head"><div><span class="eyebrow">RESPONSE HUB</span><h2>Operational tasks</h2><p>Turn recommendations into accountable execution.</p></div><span class="api-badge"><b id="taskCount">0</b>/5 ACK</span></div>
+          <div class="task-list" id="taskList"></div>
+        </div>
+        <div class="glass comms-card">
+          <div class="section-head"><div><span class="eyebrow">COMMUNICATIONS COMPILER</span><h2>One state, every audience</h2></div><button class="secondary" id="compileCommsBtn">Recompile</button></div>
+          <div class="message-tabs" id="messageTabs"></div>
+          <div class="message-preview"><div class="message-meta"><span id="messageChannel">OPERATIONS</span><button id="copyMessageBtn">Copy</button></div><h3 id="messageTitle">Operations briefing</h3><div id="messageBody"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-reports">
+      <div class="report-layout">
+        <div class="glass report-hero">
+          <div><span class="eyebrow">POST-EVENT INTELLIGENCE</span><h2>Resilience report</h2><p>Close the loop: what happened, what worked, and what to change next time.</p></div>
+          <div class="report-score"><small>RESILIENCE</small><b>62 → <em>84</em></b><span>+22 points</span></div>
+        </div>
+        <div class="report-kpis" id="reportKpis"></div>
+        <div class="glass report-timeline"><span class="eyebrow">RISK AVOIDED</span><h2>Operational impact</h2><div class="report-chart" id="reportChart"></div></div>
+        <div class="glass lessons"><span class="eyebrow">ACTIONCAST POSTMORTEM</span><h2>What mattered most</h2><p id="reportSummary"></p><div id="reportRecommendations" class="rec-list"></div></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-evidence">
+      <div class="evidence-layout">
+        <div class="glass architecture-card span-2">
+          <div class="section-head"><div><span class="eyebrow">SYSTEM ARCHITECTURE</span><h2>From climate signal to operational action</h2><p>Deterministic measurements and simulation surround the generative AI layer.</p></div><span class="api-badge">AUDITABLE</span></div>
+          <div class="architecture-flow">
+            <div class="arch-node"><i>01</i><b>Climate APIs</b><span>Weather · AQI · warnings</span></div><em>→</em>
+            <div class="arch-node"><i>02</i><b>Context Engine</b><span>Crowd · venue · resources</span></div><em>→</em>
+            <div class="arch-node"><i>03</i><b>RiskGraph</b><span>Deterministic score</span></div><em>→</em>
+            <div class="arch-node"><i>04</i><b>Guidance Retrieval</b><span>WHO · WMO · C3S</span></div><em>→</em>
+            <div class="arch-node highlight"><i>05</i><b>ActionCast AI</b><span>Feasible operations plan</span></div><em>→</em>
+            <div class="arch-node"><i>06</i><b>Scenario Engine</b><span>Before / after math</span></div><em>→</em>
+            <div class="arch-node"><i>07</i><b>Human Operator</b><span>Apply · acknowledge</span></div>
+          </div>
+        </div>
+        <div class="glass source-card"><span class="eyebrow">DATA PROVENANCE</span><h2>Live integrations</h2><div id="sourceList" class="source-list"></div></div>
+        <div class="glass guidance-card"><span class="eyebrow">GUIDANCE LIBRARY</span><h2>Grounded planning</h2><div id="guidanceLibrary" class="guidance-library"></div></div>
+        <div class="glass audit-card span-2"><span class="eyebrow">AUDIT TRAIL</span><h2>Decision history</h2><div class="audit-list" id="auditList"></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="architectureModal">
+  <div class="modal">
+    <button class="modal-close" data-close-modal>×</button>
+    <span class="eyebrow">HOW CROWDSHIFT WORKS</span><h2>Climate Operations Intelligence</h2>
+    <p class="modal-lead">CrowdShift does not ask an LLM to guess risk. Measurements and venue constraints are scored first; AI then plans within that verified state.</p>
+    <div class="modal-arch">
+      <div><b>Open-Meteo</b><span>Weather / apparent temp / wind</span></div><i>+</i><div><b>CAMS / AQI</b><span>Air quality context</span></div><i>+</i><div><b>MeteoAlarm</b><span>Official warning context</span></div><em>↓</em>
+      <div class="wide"><b>RiskGraph + Event Context</b><span>Environmental 40% · Exposure 25% · Resources 25% · Warning 10%</span></div><em>↓</em>
+      <div class="wide ai"><b>Guidance Retrieval → ActionCast AI</b><span>Constraints + evidence → ranked feasible plan</span></div><em>↓</em>
+      <div class="wide"><b>Scenario Engine → Response Hub</b><span>Simulate before applying · tasks · communications · audit trail</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="riskModal">
+  <div class="modal compact-modal">
+    <button class="modal-close" data-close-modal>×</button>
+    <span class="eyebrow">RISKGRAPH EXPLAINABILITY</span><h2>Why operational risk = 82</h2>
+    <div class="contribution-list">
+      <div><span>Heat / environmental conditions</span><b>+37</b></div>
+      <div><span>Crowd exposure</span><b>+19</b></div>
+      <div><span>Cooling + water capacity gaps</span><b>+17</b></div>
+      <div><span>Official warning context</span><b>+9</b></div>
+    </div>
+    <p>Weighted model: Environmental 40% + Exposure 25% + Resources 25% + Official Warning 10%. The AI does not calculate this score.</p>
+  </div>
+</div>
+
+<div class="tour-toast" id="tourToast"><span class="eyebrow">JUDGE TOUR</span><b id="tourTitle"></b><p id="tourText"></p><div><button id="tourStop">Stop</button><button id="tourNext">Next →</button></div></div>
+<div class="toast" id="toast"></div>
+
+
+<div class="modal-backdrop open" id="introModal">
+  <div class="modal intro-modal">
+    <button class="modal-close" data-close-modal>×</button>
+    <span class="eyebrow">WELCOME TO CROWDSHIFT</span>
+    <h2>From climate signal to operational action</h2>
+    <p class="modal-lead">CrowdShift helps operators understand how heat, crowd exposure and resource gaps interact so they can act <b>before</b> a dangerous situation escalates.</p>
+    <div class="intro-grid">
+      <div><b>1. Atlas</b><span>See Europe-wide heat exposure and identify priority events.</span></div>
+      <div><b>2. Event Twin</b><span>Inspect the local venue, crowd load and capacity gaps.</span></div>
+      <div><b>3. ActionCast AI</b><span>Generate a constrained, evidence-backed response plan.</span></div>
+      <div><b>4. Scenario Lab</b><span>Simulate interventions before applying them.</span></div>
+    </div>
+    <div class="intro-actions">
+      <button class="secondary" id="startJudgeTour">Take guided tour</button>
+      <button class="primary" id="enterPlatformBtn">Enter platform</button>
+    </div>
+  </div>
+</div>
+<script src="/app.js"></script>
+<script src="/map-viz.js"></script>
+</body>
+</html>

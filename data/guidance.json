@@ -1,0 +1,143 @@
+[
+  {
+    "id": "who-cooling",
+    "source": "WHO",
+    "title": "Heat-health operations",
+    "tags": [
+      "heat",
+      "cooling",
+      "indoor",
+      "mass gathering",
+      "venue",
+      "shade"
+    ],
+    "summary": "For high-heat conditions, operational plans should prioritize access to cooler environments, shade, hydration and rapid escalation for people showing signs of heat stress.",
+    "url": "https://www.who.int/publications/i/item/B09849"
+  },
+  {
+    "id": "who-hydration",
+    "source": "WHO",
+    "title": "Hydration and exposure reduction",
+    "tags": [
+      "water",
+      "hydration",
+      "heat",
+      "crowd",
+      "outdoor"
+    ],
+    "summary": "Heat plans for gatherings should reduce prolonged exposure and ensure practical access to drinking water and cooling opportunities.",
+    "url": "https://www.who.int/publications/i/item/B09849"
+  },
+  {
+    "id": "wmo-action",
+    "source": "WMO",
+    "title": "Forecast-to-action principle",
+    "tags": [
+      "warning",
+      "early action",
+      "forecast",
+      "communication",
+      "response"
+    ],
+    "summary": "An effective warning system should connect forecasts to timely, understandable and actionable decisions rather than stopping at hazard prediction.",
+    "url": "https://wmo.int/"
+  },
+  {
+    "id": "wmo-lastmile",
+    "source": "WMO",
+    "title": "Last-mile warning delivery",
+    "tags": [
+      "warning",
+      "communication",
+      "staff",
+      "visitors",
+      "messages"
+    ],
+    "summary": "Warnings are most useful when they reach the people responsible for acting and are translated into concrete instructions appropriate to each audience.",
+    "url": "https://wmo.int/"
+  },
+  {
+    "id": "c3s-heatstress",
+    "source": "Copernicus C3S",
+    "title": "European heat-stress context",
+    "tags": [
+      "europe",
+      "heat",
+      "climate",
+      "temperature",
+      "historical"
+    ],
+    "summary": "European climate monitoring shows increasing exposure to strong heat stress, making local adaptation and preparedness increasingly important.",
+    "url": "https://climate.copernicus.eu/"
+  },
+  {
+    "id": "meteoalarm-warning",
+    "source": "MeteoAlarm",
+    "title": "Official warning context",
+    "tags": [
+      "official",
+      "warning",
+      "belgium",
+      "high temperature",
+      "alert"
+    ],
+    "summary": "Official warnings from national meteorological services provide authoritative hazard context; operational risk still depends on local exposure and resources.",
+    "url": "https://www.meteoalarm.org/"
+  },
+  {
+    "id": "ops-capacity",
+    "source": "CrowdShift Operations Model",
+    "title": "Capacity-gap reasoning",
+    "tags": [
+      "capacity",
+      "cooling",
+      "water",
+      "resources",
+      "gap"
+    ],
+    "summary": "Resource demand should be compared with available throughput during the critical window; the largest feasible capacity gap is a priority intervention candidate.",
+    "url": "local://risk-model"
+  },
+  {
+    "id": "ops-kids",
+    "source": "CrowdShift Operations Model",
+    "title": "Schedule-shift reasoning",
+    "tags": [
+      "children",
+      "schedule",
+      "safe window",
+      "program",
+      "time"
+    ],
+    "summary": "Activities involving more heat-sensitive groups can be shifted outside the peak environmental window when this preserves event continuity and reduces exposure.",
+    "url": "local://risk-model"
+  },
+  {
+    "id": "ops-med",
+    "source": "CrowdShift Operations Model",
+    "title": "Response coverage",
+    "tags": [
+      "medical",
+      "response",
+      "coverage",
+      "crowd",
+      "peak"
+    ],
+    "summary": "Response coverage should increase when high crowd exposure and environmental risk overlap, while access routes remain clear.",
+    "url": "local://risk-model"
+  },
+  {
+    "id": "ops-uncertainty",
+    "source": "CrowdShift Operations Model",
+    "title": "Uncertainty-aware planning",
+    "tags": [
+      "confidence",
+      "uncertainty",
+      "best case",
+      "worst case",
+      "forecast"
+    ],
+    "summary": "Operational decisions should consider expected, lower and upper risk cases rather than relying on a single precise forecast value.",
+    "url": "local://risk-model"
+  }
+]
